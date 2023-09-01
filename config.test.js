@@ -1,4 +1,5 @@
 "use strict";
+const { MYUSERNAME, MYPASSWORD } = require("./secrets");
 
 describe("config can come from env", function () {
   test("works", function () {
@@ -18,9 +19,13 @@ describe("config can come from env", function () {
     delete process.env.BCRYPT_WORK_FACTOR;
     delete process.env.DATABASE_URL;
 
-    expect(config.getDatabaseUri()).toEqual("jobly");
+    expect(config.getDatabaseUri()).toEqual(
+      `postgresql://${MYUSERNAME}:${MYPASSWORD}@localhost/jobly`
+    );
     process.env.NODE_ENV = "test";
 
-    expect(config.getDatabaseUri()).toEqual("jobly_test");
+    expect(config.getDatabaseUri()).toEqual(
+      `postgresql://${MYUSERNAME}:${MYPASSWORD}@localhost/jobly_test`
+    );
   });
 });
